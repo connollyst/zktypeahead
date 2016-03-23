@@ -9,8 +9,4 @@ import org.zkoss.zul.impl.XulElement;
  */
 public class Typeahead extends XulElement {
 
-    public Typeahead() {
-        System.out.println("Typing ahead..!");
-    }
-
 }

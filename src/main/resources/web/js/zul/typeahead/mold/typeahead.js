@@ -1,4 +1,3 @@
 function (out) {
-    out.push('<div', this.domAttrs_(), '>');
-    out.push('</div>');
+    out.push('<input type="text" ', this.domAttrs_(), '>');
 }
