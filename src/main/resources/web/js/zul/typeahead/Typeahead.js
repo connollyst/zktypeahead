@@ -34,18 +34,27 @@ zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
 
     _getNativeDataset: function () {
         var dataset = this.getDataset();
-        var source = dataset['source'];
+        dataset['templates'] = this._toNativeDatasetTemplates(dataset['templates']);
+        dataset['source'] = this._toNativeDatasetSource(dataset['source']);
+        return dataset;
+    },
+    _toNativeDatasetTemplates: function (templates) {
+        for (var key in templates) {
+            if (templates.hasOwnProperty(key)) {
+                templates[key] = Handlebars.compile(templates[key]);
+            }
+        }
+        return templates;
+    },
+    _toNativeDatasetSource: function (source) {
         if ('_class' in source) {
             switch (source['_class']) {
                 case 'bloodhound':
-                    source = this._toBloodhoundDataset(source);
-                    break;
+                    return this._toBloodhoundDataset(source);
                 default:
                     throw 'Unsupported dataset source: "' + source['_class'] + '"'
             }
         }
-        dataset['source'] = source;
-        return dataset;
     },
     _toBloodhoundDataset: function (source) {
         var type = source['_type'];
@@ -67,11 +76,9 @@ zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
                 return widget._toBloodhoundTokenizer(tokenizer);
             });
             return function customTokenizer(datum) {
-                var tokenized = $.map(nativeTokenizers, function (nativeTokenizer) {
+                return $.map(nativeTokenizers, function (nativeTokenizer) {
                     return nativeTokenizer(datum);
                 });
-                console.log('Tokenized: ' + tokenized);
-                return tokenized;
             }
         }
     },

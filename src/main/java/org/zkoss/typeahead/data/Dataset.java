@@ -2,6 +2,7 @@ package org.zkoss.typeahead.data;
 
 import org.zkoss.json.JSONObject;
 
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -41,6 +42,14 @@ public class Dataset extends JSONObject {
         JSONObject jsonTemplates = new JSONObject();
         jsonTemplates.putAll(templates);
         put(TEMPLATES, jsonTemplates);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void addTemplate(String key, String value) {
+        if (!containsKey(TEMPLATES)) {
+            setTemplates(Collections.<String, String>emptyMap());
+        }
+        ((Map<String, String>) get(TEMPLATES)).put(key, value);
     }
 
     static abstract class Source extends JSONObject {

@@ -27,10 +27,11 @@ public class Typeahead extends XulElement {
                 Bloodhound.Tokenizer.whitespace("last")
         );
         bloodhound.setQueryTokenizers(Bloodhound.Tokenizer.whitespace());
-        System.out.println("Bloodhound: " + bloodhound);
         Dataset ds = new Dataset(bloodhound);
         ds.setName("alps-people");
         ds.setDisplay("login");
+        ds.addTemplate("suggestion", "<p class='n-person-item'><img class='n-avatar' src='{{photo}}'/>{{first}} {{last}} ({{login}})</p>");
+        ds.addTemplate("empty", "<div>No matches.</div>");
         setDataset(ds);
     }
 
