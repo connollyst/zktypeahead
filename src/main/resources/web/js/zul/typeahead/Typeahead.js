@@ -1,0 +1,1 @@
+zul.typeahead.Typeahead = zk.$extends(zk.Widget, {});

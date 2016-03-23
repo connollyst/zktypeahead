@@ -1,0 +1,24 @@
+<language-addon>
+    <addon-name>zktypeahead</addon-name>
+    <depends>zul</depends>
+    <language-name>xul/html</language-name>
+
+    <version>
+        <version-class>org.zkoss.typeahead.Version</version-class>
+        <version-uid>0.1</version-uid>
+        <zk-version>7.0.0</zk-version>
+        <!-- or later -->
+    </version>
+
+    <component>
+        <component-name>typeahead</component-name>
+        <component-class>org.zkoss.typeahead.Typeahead</component-class>
+        <widget-class>zul.typeahead.Typeahead</widget-class>
+        <mold>
+            <mold-name>default</mold-name>
+            <mold-uri>mold/typeahead.js</mold-uri>
+            <css-uri>v0.11.1/jquery.gridster.min.css</css-uri>
+        </mold>
+    </component>
+
+</language-addon>
