@@ -1,7 +1,8 @@
 zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
     $define: {
+        highlight: null,
         hint: null,
-        highlight: null
+        minLength: null
     },
     bind_: function () {
         this.$supers(zul.typeahead.Typeahead, 'bind_', arguments);
@@ -28,7 +29,7 @@ zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
         $('#' + this.uuid).typeahead({
                 hint: this.getHint(),
                 highlight: this.getHighlight(),
-                minLength: 1
+                minLength: this.getMinLength()
             },
             {
                 name: 'states',

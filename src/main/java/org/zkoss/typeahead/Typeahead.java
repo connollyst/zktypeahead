@@ -12,19 +12,9 @@ import java.io.IOException;
  */
 public class Typeahead extends XulElement {
 
-    private Boolean hint = true;
     private Boolean highlight = true;
-
-    public boolean getHint() {
-        return hint;
-    }
-
-    public void setHint(boolean hint) {
-        if (this.hint != hint) {
-            this.hint = hint;
-            smartUpdate("hint", hint);
-        }
-    }
+    private Boolean hint = true;
+    private int minLength = 1;
 
     public Boolean getHighlight() {
         return highlight;
@@ -37,11 +27,34 @@ public class Typeahead extends XulElement {
         }
     }
 
+    public boolean getHint() {
+        return hint;
+    }
+
+    public void setHint(boolean hint) {
+        if (this.hint != hint) {
+            this.hint = hint;
+            smartUpdate("hint", hint);
+        }
+    }
+
+    public int getMinLength() {
+        return minLength;
+    }
+
+    public void setMinLength(int minLength) {
+        if (this.minLength != minLength) {
+            this.minLength = minLength;
+            smartUpdate("minLength", minLength);
+        }
+    }
+
     @Override
     protected void renderProperties(ContentRenderer renderer) throws IOException {
         super.renderProperties(renderer);
-        render(renderer, "hint", hint);
         render(renderer, "highlight", highlight);
+        render(renderer, "hint", hint);
+        render(renderer, "minLength", minLength);
     }
 
 }
