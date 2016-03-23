@@ -13,6 +13,7 @@ import java.io.IOException;
 public class Typeahead extends XulElement {
 
     private Boolean hint = true;
+    private Boolean highlight = true;
 
     public boolean getHint() {
         return hint;
@@ -25,9 +26,22 @@ public class Typeahead extends XulElement {
         }
     }
 
+    public Boolean getHighlight() {
+        return highlight;
+    }
+
+    public void setHighlight(Boolean highlight) {
+        if (this.highlight != highlight) {
+            this.highlight = highlight;
+            smartUpdate("highlight", highlight);
+        }
+    }
+
     @Override
     protected void renderProperties(ContentRenderer renderer) throws IOException {
         super.renderProperties(renderer);
         render(renderer, "hint", hint);
+        render(renderer, "highlight", highlight);
     }
+
 }

@@ -1,11 +1,13 @@
 zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
     $define: {
-        hint: null
+        hint: null,
+        highlight: null
     },
     bind_: function () {
         this.$supers(zul.typeahead.Typeahead, 'bind_', arguments);
         console.log(this);
         console.log('Typeahead.js: hint=' + this.getHint());
+        console.log('Typeahead.js: highlight=' + this.getHighlight());
         console.log('Typeahead.js: preparing substring matcher');
         var states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
             'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
@@ -25,7 +27,7 @@ zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
         console.log('Typeahead.js: initializing typeahead');
         $('#' + this.uuid).typeahead({
                 hint: this.getHint(),
-                highlight: true,
+                highlight: this.getHighlight(),
                 minLength: 1
             },
             {
