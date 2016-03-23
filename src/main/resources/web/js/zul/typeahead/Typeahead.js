@@ -2,39 +2,49 @@ zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
     $define: {
         highlight: null,
         hint: null,
-        minLength: null
+        minLength: null,
+        dataset: null
+    },
+    getNativeDataset: function () {
+        console.log(this);
+        var dataset = this.getDataset();
+        console.log(dataset);
+        var source = dataset['source'];
+        if ('_class' in source) {
+            var config = {
+                datumTokenizer: Bloodhound.tokenizers.whitespace,
+                queryTokenizer: Bloodhound.tokenizers.whitespace
+            };
+            if ('local' in source) {
+                console.log('Configuring local dataset..');
+                config['local'] = source['local'];
+            }
+            if ('prefetch' in source) {
+                console.log('Configuring prefetch dataset..');
+                config['prefetch'] = source['prefetch'];
+            }
+            if ('remote' in source) {
+                console.log('Configuring remote dataset..');
+                config['remote'] = source['remote'];
+            }
+            dataset['source'] = new Bloodhound(config);
+        }
+        return dataset;
     },
     bind_: function () {
         this.$supers(zul.typeahead.Typeahead, 'bind_', arguments);
         console.log(this);
-        console.log('Typeahead.js: hint=' + this.getHint());
-        console.log('Typeahead.js: highlight=' + this.getHighlight());
-        console.log('Typeahead.js: preparing substring matcher');
-        var states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
-            'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
-            'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
-            'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
-            'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
-            'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
-            'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
-            'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
-            'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-        ];
-        var statehound = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.whitespace,
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            local: states
-        });
-        console.log('Typeahead.js: initializing typeahead');
-        $('#' + this.uuid).typeahead({
-                hint: this.getHint(),
-                highlight: this.getHighlight(),
-                minLength: this.getMinLength()
-            },
-            {
-                name: 'states',
-                source: statehound
-            });
+        var config = {
+            hint: this.getHint(),
+            highlight: this.getHighlight(),
+            minLength: this.getMinLength()
+        };
+        console.log('Typeahead.js: preparing native dataset');
+        console.log(this.getDataset());
+        var dataset = this.getNativeDataset();
+        console.log(dataset);
+        console.log('Typeahead.js: initializing typeahead widget');
+        $('#' + this.uuid).typeahead(config, dataset);
     },
     domClass_: function (no) {
         var classes = this.$supers("domClass_", no) || '';
