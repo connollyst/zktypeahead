@@ -4,7 +4,7 @@
 
     <groupId>org.zkoss</groupId>
     <artifactId>zktypeahead</artifactId>
-    <version>0.1</version>
+    <version>0.2</version>
 
     <name>ZK Typeahead.js</name>
     <description>ZK wrapper for Twitter's Typeahead.js and Bloodhound</description>
