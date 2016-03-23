@@ -17,6 +17,7 @@ public class Dataset extends JSONObject {
     private static final String TEMPLATES = "templates";
 
     public Dataset(Datasource source) {
+        source.validate();
         put(SOURCE, source);
     }
 

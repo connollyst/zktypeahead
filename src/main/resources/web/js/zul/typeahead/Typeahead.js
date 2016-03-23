@@ -5,32 +5,6 @@ zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
         minLength: null,
         dataset: null
     },
-    getNativeDataset: function () {
-        console.log(this);
-        var dataset = this.getDataset();
-        console.log(dataset);
-        var source = dataset['source'];
-        if ('_class' in source) {
-            var config = {
-                datumTokenizer: Bloodhound.tokenizers.whitespace,
-                queryTokenizer: Bloodhound.tokenizers.whitespace
-            };
-            if ('local' in source) {
-                console.log('Configuring local dataset..');
-                config['local'] = source['local'];
-            }
-            if ('prefetch' in source) {
-                console.log('Configuring prefetch dataset..');
-                config['prefetch'] = source['prefetch'];
-            }
-            if ('remote' in source) {
-                console.log('Configuring remote dataset..');
-                config['remote'] = source['remote'];
-            }
-            dataset['source'] = new Bloodhound(config);
-        }
-        return dataset;
-    },
     bind_: function () {
         this.$supers(zul.typeahead.Typeahead, 'bind_', arguments);
         console.log(this);
@@ -39,9 +13,10 @@ zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
             highlight: this.getHighlight(),
             minLength: this.getMinLength()
         };
-        console.log('Typeahead.js: preparing native dataset');
+        console.log('ZK Dataset:');
         console.log(this.getDataset());
-        var dataset = this.getNativeDataset();
+        console.log('Typeahead.js: preparing native dataset:');
+        var dataset = this._getNativeDataset();
         console.log(dataset);
         console.log('Typeahead.js: initializing typeahead widget');
         $('#' + this.uuid).typeahead(config, dataset);
@@ -53,5 +28,72 @@ zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
         }
         classes += 'z-textbox';
         return classes.trim();
+    },
+    _getNativeDataset: function () {
+        var dataset = this.getDataset();
+        console.log(dataset);
+        var source = dataset['source'];
+        if ('_class' in source) {
+            switch (source['_class']) {
+                case 'bloodhound':
+                    source = this._toBloodhoundDataset(source);
+                    break;
+                default:
+                // TODO error
+            }
+        }
+        dataset['source'] = source;
+        return dataset;
+    },
+    _toBloodhoundDataset: function (source) {
+        var type = source['_type'];
+        var config = {
+            datumTokenizer: this._toBloodhoundTokenizers(source['datumTokenizers']),
+            queryTokenizer: this._toBloodhoundTokenizers(source['queryTokenizers']),
+        };
+        config[type] = source[type];
+        return new Bloodhound(config);
+    },
+    _toBloodhoundTokenizers: function (tokenizers) {
+        if (tokenizers == undefined) {
+            return null;
+        } else if (tokenizers.length == 1) {
+            return this._toBloodhoundTokenizer(tokenizers[0]);
+        } else {
+            var widget = this;
+            var nativeTokenizers = $.map(tokenizers, function (tokenizer) {
+                return widget._toBloodhoundTokenizer(tokenizer);
+            });
+            return function customTokenizer(datum) {
+                var tokenized = $.map(nativeTokenizers, function (nativeTokenizer) {
+                    return nativeTokenizer(datum);
+                });
+                console.log('Tokenized data: ' + tokenized);
+                return tokenized;
+            }
+        }
+    },
+    _toBloodhoundTokenizer: function (tokenizer) {
+        console.log(tokenizer);
+        var hasKey = ('key' in tokenizer);
+        var key = tokenizer['key'];
+        var t = this._toBloodhoundRawTokenizer(tokenizer);
+        if (!hasKey) {
+            return t
+        } else {
+            return function (datum) {
+                return t(datum[key]);
+            }
+        }
+    },
+    _toBloodhoundRawTokenizer: function (tokenizer) {
+        switch (tokenizer['type']) {
+            case 'nonword':
+                return Bloodhound.tokenizers.nonword;
+            case 'whitespace':
+                return Bloodhound.tokenizers.whitespace;
+            default:
+                throw "Unsupported Bloodhound tokenizer type: '" + tokenizer['type'] + "'"
+        }
     }
 });

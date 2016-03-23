@@ -1,5 +1,6 @@
 package org.zkoss.typeahead;
 
+import org.zkoss.typeahead.bloodhound.Tokenizer;
 import org.zkoss.zk.ui.sys.ContentRenderer;
 import org.zkoss.zul.impl.XulElement;
 
@@ -18,17 +19,14 @@ public class Typeahead extends XulElement {
     private Dataset dataset;
 
     public Typeahead() {
-        setDataset(new Dataset(Bloodhound.local(new String[]{
-                "Alabama", "Alaska", "Arizona", "Arkansas", "California",
-                "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii",
-                "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana",
-                "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota",
-                "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire",
-                "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota",
-                "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island",
-                "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont",
-                "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
-        })));
+        Bloodhound bloodhound = Bloodhound.prefetch("http://localhost:8080/zktypeahead/users.json", false);
+        bloodhound.setDatumTokenizers(Tokenizer.whitespace("login"), Tokenizer.whitespace("first"), Tokenizer.whitespace("last"));
+        bloodhound.setQueryTokenizers(Tokenizer.whitespace());
+        System.out.println("Bloodhound: " + bloodhound);
+        Dataset ds = new Dataset(bloodhound);
+        ds.setName("alps-people");
+        ds.setDisplay("login");
+        setDataset(ds);
     }
 
     public Boolean getHighlight() {
