@@ -1,24 +1,24 @@
 zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
+
+    // fields
+
     $define: {
         highlight: null,
         hint: null,
         minLength: null,
         dataset: null
     },
+
+    // protected
+
     bind_: function () {
         this.$supers(zul.typeahead.Typeahead, 'bind_', arguments);
-        console.log(this);
         var config = {
             hint: this.getHint(),
             highlight: this.getHighlight(),
             minLength: this.getMinLength()
         };
-        console.log('ZK Dataset:');
-        console.log(this.getDataset());
-        console.log('Typeahead.js: preparing native dataset:');
         var dataset = this._getNativeDataset();
-        console.log(dataset);
-        console.log('Typeahead.js: initializing typeahead widget');
         $('#' + this.uuid).typeahead(config, dataset);
     },
     domClass_: function (no) {
@@ -29,9 +29,11 @@ zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
         classes += 'z-textbox';
         return classes.trim();
     },
+
+    // private
+
     _getNativeDataset: function () {
         var dataset = this.getDataset();
-        console.log(dataset);
         var source = dataset['source'];
         if ('_class' in source) {
             switch (source['_class']) {
@@ -39,7 +41,7 @@ zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
                     source = this._toBloodhoundDataset(source);
                     break;
                 default:
-                // TODO error
+                    throw 'Unsupported dataset source: "' + source['_class'] + '"'
             }
         }
         dataset['source'] = source;
@@ -49,7 +51,7 @@ zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
         var type = source['_type'];
         var config = {
             datumTokenizer: this._toBloodhoundTokenizers(source['datumTokenizers']),
-            queryTokenizer: this._toBloodhoundTokenizers(source['queryTokenizers']),
+            queryTokenizer: this._toBloodhoundTokenizers(source['queryTokenizers'])
         };
         config[type] = source[type];
         return new Bloodhound(config);
@@ -68,13 +70,12 @@ zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
                 var tokenized = $.map(nativeTokenizers, function (nativeTokenizer) {
                     return nativeTokenizer(datum);
                 });
-                console.log('Tokenized data: ' + tokenized);
+                console.log('Tokenized: ' + tokenized);
                 return tokenized;
             }
         }
     },
     _toBloodhoundTokenizer: function (tokenizer) {
-        console.log(tokenizer);
         var hasKey = ('key' in tokenizer);
         var key = tokenizer['key'];
         var t = this._toBloodhoundRawTokenizer(tokenizer);
@@ -93,7 +94,7 @@ zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
             case 'whitespace':
                 return Bloodhound.tokenizers.whitespace;
             default:
-                throw "Unsupported Bloodhound tokenizer type: '" + tokenizer['type'] + "'"
+                throw 'Unsupported Bloodhound tokenizer type: "' + tokenizer['type'] + '"'
         }
     }
 });
