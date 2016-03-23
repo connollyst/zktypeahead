@@ -17,7 +17,7 @@
         <mold>
             <mold-name>default</mold-name>
             <mold-uri>mold/typeahead.js</mold-uri>
-            <css-uri>v0.11.1/typeahead.css</css-uri>
+            <css-uri>styles.css</css-uri>
         </mold>
     </component>
 

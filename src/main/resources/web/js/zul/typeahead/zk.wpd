@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <package name="zul.typeahead" language="xul/html">
-    <script src="v0.11.1/typeahead.bundle.min.js"/>
+    <script src="lib/handlebars-v4.0.5.js"/>
+    <script src="lib/typeahead.bundle.min-v0.11.1.js"/>
     <widget name="Typeahead"/>
 </package>
