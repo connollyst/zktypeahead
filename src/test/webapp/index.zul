@@ -1,0 +1,4 @@
+<window id="win" apply="org.zkoss.bind.BindComposer"
+        viewModel="@id('vm') @init('org.zkoss.typeahead.DemoViewModel')">
+    <typeahead/>
+</window>
