@@ -1,6 +1,7 @@
 package org.zkoss.typeahead;
 
-import org.zkoss.typeahead.bloodhound.Tokenizer;
+import org.zkoss.typeahead.data.Bloodhound;
+import org.zkoss.typeahead.data.Dataset;
 import org.zkoss.zk.ui.sys.ContentRenderer;
 import org.zkoss.zul.impl.XulElement;
 
@@ -20,8 +21,12 @@ public class Typeahead extends XulElement {
 
     public Typeahead() {
         Bloodhound bloodhound = Bloodhound.prefetch("http://localhost:8080/zktypeahead/users.json", false);
-        bloodhound.setDatumTokenizers(Tokenizer.whitespace("login"), Tokenizer.whitespace("first"), Tokenizer.whitespace("last"));
-        bloodhound.setQueryTokenizers(Tokenizer.whitespace());
+        bloodhound.setDatumTokenizers(
+                Bloodhound.Tokenizer.whitespace("login"),
+                Bloodhound.Tokenizer.whitespace("first"),
+                Bloodhound.Tokenizer.whitespace("last")
+        );
+        bloodhound.setQueryTokenizers(Bloodhound.Tokenizer.whitespace());
         System.out.println("Bloodhound: " + bloodhound);
         Dataset ds = new Dataset(bloodhound);
         ds.setName("alps-people");

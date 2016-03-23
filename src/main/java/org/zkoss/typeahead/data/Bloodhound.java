@@ -1,14 +1,13 @@
-package org.zkoss.typeahead;
+package org.zkoss.typeahead.data;
 
 import org.zkoss.json.JSONObject;
-import org.zkoss.typeahead.bloodhound.Tokenizer;
 
 import java.util.Map;
 
 /**
  * @author Sean Connolly
  */
-public class Bloodhound extends Datasource {
+public class Bloodhound extends Dataset.Source {
 
     public static final String CLASS = "_class";
     public static final String TYPE = "_type";
@@ -53,5 +52,63 @@ public class Bloodhound extends Datasource {
         if (!containsKey(key)) {
             throw new IllegalStateException(key + " is required.");
         }
+    }
+
+    public static class Tokenizer extends JSONObject {
+
+        public static Tokenizer nonword() {
+            return new NonwordTokenizer();
+        }
+
+        public static Tokenizer nonword(String key) {
+            return new NonwordTokenizer(key);
+        }
+
+        public static Tokenizer whitespace() {
+            return new WhitespaceTokenizer();
+        }
+
+        public static Tokenizer whitespace(String key) {
+            return new WhitespaceTokenizer(key);
+        }
+
+        private Tokenizer(String type) {
+            put("type", type);
+        }
+
+
+        /**
+         * @author Sean Connolly
+         */
+        private static final class NonwordTokenizer extends Tokenizer {
+
+            private NonwordTokenizer() {
+                super("nonword");
+            }
+
+            private NonwordTokenizer(String key) {
+                this();
+                put("key", key);
+            }
+
+        }
+
+        /**
+         * @author Sean Connolly
+         */
+        private static final class WhitespaceTokenizer extends Tokenizer {
+
+
+            private WhitespaceTokenizer() {
+                super("whitespace");
+            }
+
+            private WhitespaceTokenizer(String key) {
+                this();
+                put("key", key);
+            }
+
+        }
+
     }
 }

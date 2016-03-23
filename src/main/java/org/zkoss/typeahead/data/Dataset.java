@@ -1,4 +1,4 @@
-package org.zkoss.typeahead;
+package org.zkoss.typeahead.data;
 
 import org.zkoss.json.JSONObject;
 
@@ -16,7 +16,7 @@ public class Dataset extends JSONObject {
     private static final String DISPLAY = "display";
     private static final String TEMPLATES = "templates";
 
-    public Dataset(Datasource source) {
+    public Dataset(Dataset.Source source) {
         source.validate();
         put(SOURCE, source);
     }
@@ -41,6 +41,12 @@ public class Dataset extends JSONObject {
         JSONObject jsonTemplates = new JSONObject();
         jsonTemplates.putAll(templates);
         put(TEMPLATES, jsonTemplates);
+    }
+
+    static abstract class Source extends JSONObject {
+
+        abstract void validate();
+
     }
 
 }
