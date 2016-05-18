@@ -1,6 +1,5 @@
 package org.zkoss.typeahead;
 
-import org.zkoss.typeahead.data.Bloodhound;
 import org.zkoss.typeahead.data.Dataset;
 import org.zkoss.zk.ui.sys.ContentRenderer;
 import org.zkoss.zul.impl.XulElement;
@@ -18,22 +17,6 @@ public class Typeahead extends XulElement {
     private Boolean hint = true;
     private int minLength = 1;
     private Dataset dataset;
-
-    public Typeahead() {
-        Bloodhound bloodhound = Bloodhound.prefetch("http://localhost:8080/zktypeahead/users.json", false);
-        bloodhound.setDatumTokenizers(
-                Bloodhound.Tokenizer.whitespace("login"),
-                Bloodhound.Tokenizer.whitespace("first"),
-                Bloodhound.Tokenizer.whitespace("last")
-        );
-        bloodhound.setQueryTokenizers(Bloodhound.Tokenizer.whitespace());
-        Dataset ds = new Dataset(bloodhound);
-        ds.setName("alps-people");
-        ds.setDisplay("login");
-        ds.addTemplate("suggestion", "<p class='n-person-item'><img class='n-avatar' src='{{photo}}'/>{{first}} {{last}} ({{login}})</p>");
-        ds.addTemplate("empty", "<div>No matches.</div>");
-        setDataset(ds);
-    }
 
     public Boolean getHighlight() {
         return highlight;

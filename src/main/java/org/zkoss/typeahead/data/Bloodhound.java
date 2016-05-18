@@ -14,10 +14,22 @@ public class Bloodhound extends Dataset.Source {
     public static final String PREFETCH = "prefetch";
     public static final String PREFETCH_URL = "url";
     public static final String PREFETCH_CACHE = "cache";
+    public static final String REMOTE = "remote";
+    public static final String REMOTE_URL = "url";
+    public static final String REMOTE_WILDCARD = "wildcard";
     public static final String BLOODHOUND = "bloodhound";
     public static final String DATUM_TOKENIZERS = "datumTokenizers";
     public static final String QUERY_TOKENIZERS = "queryTokenizers";
 
+
+    public static Bloodhound remote(String url, String windcard) {
+        Bloodhound bloodhound = new Bloodhound(REMOTE);
+        Map<Object, Object> remote = new JSONObject();
+        remote.put(REMOTE_URL, url);
+        remote.put(REMOTE_WILDCARD, windcard);
+        bloodhound.put(REMOTE, remote);
+        return bloodhound;
+    }
 
     public static Bloodhound prefetch(String url, boolean cache) {
         Bloodhound bloodhound = new Bloodhound(PREFETCH);
