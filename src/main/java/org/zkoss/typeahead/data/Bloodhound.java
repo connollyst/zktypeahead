@@ -2,125 +2,201 @@ package org.zkoss.typeahead.data;
 
 import org.zkoss.json.JSONObject;
 
-import java.util.Map;
-
 /**
  * @author Sean Connolly
  */
 public class Bloodhound extends Dataset.Source {
 
-    public static final String CLASS = "_class";
-    public static final String TYPE = "_type";
-    public static final String PREFETCH = "prefetch";
-    public static final String PREFETCH_URL = "url";
-    public static final String PREFETCH_CACHE = "cache";
-    public static final String REMOTE = "remote";
-    public static final String REMOTE_URL = "url";
-    public static final String REMOTE_WILDCARD = "wildcard";
-    public static final String BLOODHOUND = "bloodhound";
-    public static final String DATUM_TOKENIZERS = "datumTokenizers";
-    public static final String QUERY_TOKENIZERS = "queryTokenizers";
+	public static final String CLASS = "_class";
 
+	public static final String LOCAL = "local";
 
-    public static Bloodhound remote(String url, String windcard) {
-        Bloodhound bloodhound = new Bloodhound(REMOTE);
-        Map<Object, Object> remote = new JSONObject();
-        remote.put(REMOTE_URL, url);
-        remote.put(REMOTE_WILDCARD, windcard);
-        bloodhound.put(REMOTE, remote);
-        return bloodhound;
-    }
+	public static final String PREFETCH = "prefetch";
+	public static final String PREFETCH_URL = "url";
+	public static final String PREFETCH_CACHE = "cache";
 
-    public static Bloodhound prefetch(String url, boolean cache) {
-        Bloodhound bloodhound = new Bloodhound(PREFETCH);
-        Map<Object, Object> prefetch = new JSONObject();
-        prefetch.put(PREFETCH_URL, url);
-        prefetch.put(PREFETCH_CACHE, cache);
-        bloodhound.put(PREFETCH, prefetch);
-        return bloodhound;
-    }
+	public static final String REMOTE = "remote";
+	public static final String REMOTE_URL = "url";
+	public static final String REMOTE_WILDCARD = "wildcard";
 
-    private Bloodhound(String type) {
-        put(CLASS, BLOODHOUND);
-        put(TYPE, type);
-    }
+	public static final String BLOODHOUND = "bloodhound";
+	public static final String DATUM_TOKENIZERS = "datumTokenizers";
+	public static final String QUERY_TOKENIZERS = "queryTokenizers";
 
-    public void setDatumTokenizers(Tokenizer... tokenizers) {
-        put(DATUM_TOKENIZERS, tokenizers);
-    }
+	private Bloodhound() {
+		put(CLASS, BLOODHOUND);
+	}
 
-    public void setQueryTokenizers(Tokenizer... tokenizers) {
-        put(QUERY_TOKENIZERS, tokenizers);
-    }
+	private JSONObject getJSONObject(String key) {
+		if(!containsKey(key)) {
+			put(key, new JSONObject());
+		}
+		return (JSONObject)get(key);
+	}
 
-    void validate() {
-        vertify(CLASS);
-        vertify(TYPE);
-        vertify(DATUM_TOKENIZERS);
-        vertify(QUERY_TOKENIZERS);
-    }
+	public void setLocal(String... values) {
+		put(LOCAL, values);
+	}
 
-    void vertify(String key) {
-        if (!containsKey(key)) {
-            throw new IllegalStateException(key + " is required.");
-        }
-    }
+	public void setPrefetch(String url) {
+		getPrefetch().put(PREFETCH_URL, url);
+	}
 
-    public static class Tokenizer extends JSONObject {
+	public void setPrefetch(String url, boolean cache) {
+		getPrefetch().put(PREFETCH_URL, url);
+		getPrefetch().put(PREFETCH_CACHE, cache);
+	}
 
-        public static Tokenizer nonword() {
-            return new NonwordTokenizer();
-        }
+	private JSONObject getPrefetch() {
+		return getJSONObject(PREFETCH);
+	}
 
-        public static Tokenizer nonword(String key) {
-            return new NonwordTokenizer(key);
-        }
+	public void setRemote(String url) {
+		getPrefetch().put(PREFETCH_URL, url);
+	}
 
-        public static Tokenizer whitespace() {
-            return new WhitespaceTokenizer();
-        }
+	public void setRemote(String url, String wildcard) {
+		getRemote().put(REMOTE_URL, url);
+		getRemote().put(REMOTE_WILDCARD, wildcard);
+	}
 
-        public static Tokenizer whitespace(String key) {
-            return new WhitespaceTokenizer(key);
-        }
+	private JSONObject getRemote() {
+		return getJSONObject(PREFETCH);
+	}
 
-        private Tokenizer(String type) {
-            put("type", type);
-        }
+	public void setDatumTokenizers(Tokenizer... tokenizers) {
+		put(DATUM_TOKENIZERS, tokenizers);
+	}
 
+	public void setQueryTokenizers(Tokenizer... tokenizers) {
+		put(QUERY_TOKENIZERS, tokenizers);
+	}
 
-        /**
-         * @author Sean Connolly
-         */
-        private static final class NonwordTokenizer extends Tokenizer {
+	void validate() {
+		vertify(CLASS);
+		vertify(DATUM_TOKENIZERS);
+		vertify(QUERY_TOKENIZERS);
+	}
 
-            private NonwordTokenizer() {
-                super("nonword");
-            }
+	void vertify(String key) {
+		if(!containsKey(key)) {
+			throw new IllegalStateException(key + " is required.");
+		}
+	}
 
-            private NonwordTokenizer(String key) {
-                this();
-                put("key", key);
-            }
+	public Dataset asDataset() {
+		return new Dataset(this);
+	}
 
-        }
+	public static class Tokenizer extends JSONObject {
 
-        /**
-         * @author Sean Connolly
-         */
-        private static final class WhitespaceTokenizer extends Tokenizer {
+		public static Tokenizer nonword() {
+			return new NonwordTokenizer();
+		}
 
+		public static Tokenizer nonword(String key) {
+			return new NonwordTokenizer(key);
+		}
 
-            private WhitespaceTokenizer() {
-                super("whitespace");
-            }
+		public static Tokenizer whitespace() {
+			return new WhitespaceTokenizer();
+		}
 
-            private WhitespaceTokenizer(String key) {
-                this();
-                put("key", key);
-            }
+		public static Tokenizer whitespace(String key) {
+			return new WhitespaceTokenizer(key);
+		}
 
-        }
+		private Tokenizer(String type) {
+			put("type", type);
+		}
 
-    }
+		/**
+		 * @author Sean Connolly
+		 */
+		private static final class NonwordTokenizer extends Tokenizer {
+
+			private NonwordTokenizer() {
+				super("nonword");
+			}
+
+			private NonwordTokenizer(String key) {
+				this();
+				put("key", key);
+			}
+
+		}
+
+		/**
+		 * @author Sean Connolly
+		 */
+		private static final class WhitespaceTokenizer extends Tokenizer {
+
+			private WhitespaceTokenizer() {
+				super("whitespace");
+			}
+
+			private WhitespaceTokenizer(String key) {
+				this();
+				put("key", key);
+			}
+
+		}
+
+	}
+
+	public static Builder builder() {
+		return new Builder();
+	}
+
+	public static final class Builder {
+
+		Bloodhound bloodhound = new Bloodhound();
+
+		public Builder withLocal(String... values) {
+			bloodhound.setLocal(values);
+			return this;
+		}
+
+		public Builder withPrefetch(String url) {
+			bloodhound.setPrefetch(url);
+			return this;
+		}
+
+		public Builder withPrefetch(String url, boolean cache) {
+			bloodhound.setPrefetch(url, cache);
+			return this;
+		}
+
+		public Builder withRemote(String url) {
+			bloodhound.setRemote(url);
+			return this;
+		}
+
+		public Builder withRemote(String url, String wildcard) {
+			bloodhound.setRemote(url, wildcard);
+			return this;
+		}
+
+		public Builder withDatumTokenizers(Tokenizer... tokenizers) {
+			bloodhound.setDatumTokenizers(tokenizers);
+			return this;
+		}
+
+		public Builder withQueryTokenizers(Tokenizer... tokenizers) {
+			bloodhound.setQueryTokenizers(tokenizers);
+			return this;
+		}
+
+		public Dataset build() {
+			return bloodhound.asDataset();
+		}
+
+		public Dataset build(String name) {
+			Dataset dataset = bloodhound.asDataset();
+			dataset.setName(name);
+			return dataset;
+		}
+
+	}
+
 }

@@ -6,6 +6,8 @@ zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
         highlight: null,
         hint: null,
         minLength: null,
+        placeholder: null,
+        dir: null,
         dataset: null
     },
 
@@ -57,13 +59,9 @@ zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
         }
     },
     _toBloodhoundDataset: function (source) {
-        var type = source['_type'];
-        var config = {
-            datumTokenizer: this._toBloodhoundTokenizers(source['datumTokenizers']),
-            queryTokenizer: this._toBloodhoundTokenizers(source['queryTokenizers'])
-        };
-        config[type] = source[type];
-        return new Bloodhound(config);
+        source['datumTokenizer'] = this._toBloodhoundTokenizers(source['datumTokenizers']);
+        source['queryTokenizer'] = this._toBloodhoundTokenizers(source['queryTokenizers']);
+        return new Bloodhound(source);
     },
     _toBloodhoundTokenizers: function (tokenizers) {
         if (tokenizers == undefined) {

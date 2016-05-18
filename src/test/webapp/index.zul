@@ -1,1 +1,84 @@
-<typeahead hint="false" highlight="true" minLength="1"/>
+<?page title="zktypeahead - examples"?>
+<window apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('org.zkoss.typeahead.DemoViewModel')"
+        sclass="container" xmlns:n="native">
+    <style src="examples-plus.css"/>
+    <style src="examples.css"/>
+    <n:h1 class="title">
+        examples
+    </n:h1>
+
+    <n:div sclass="example">
+        <n:h2 class="example-name">
+            Bloodhound (Suggestion Engine)
+        </n:h2>
+        <n:p sclass="example-description">
+            <n:a href="https://github.com/twitter/typeahead.js/blob/master/doc/bloodhound.md">Bloodhound</n:a>
+            is robust, flexible, and offers advanced functionalities such as prefetching, intelligent caching, fast
+            lookups, and backfilling with remote data.
+        </n:p>
+        <n:div class="demo">
+            <typeahead sclass="typeahead" placeholder="State of USA" dataset="@load(vm.states)"/>
+        </n:div>
+    </n:div>
+
+    <n:div sclass="example">
+        <n:h2 class="example-name">
+            Prefetch
+        </n:h2>
+        <n:p sclass="example-description">
+            Prefetched data is fetched and processed on initialization. If the browser supports local storage, the
+            processed data will be cached there to prevent additional network requests on subsequent page loads.
+        </n:p>
+        <typeahead sclass="typeahead" placeholder="Countries" dataset="@load(vm.countries)"/>
+    </n:div>
+
+    <n:div sclass="example">
+        <n:h2 class="example-name">
+            Remote
+        </n:h2>
+        <n:p sclass="example-description">
+            Remote data is only used when the data provided by local and prefetch is insufficient. In order to prevent
+            an obscene number of requests being made to the remote endpoint, requests are rate-limited.
+        </n:p>
+        <typeahead sclass="typeahead" placeholder="Oscar winners for Best Picture" dataset="@load(vm.bestPictures)"/>
+    </n:div>
+
+    <n:div sclass="example">
+        <n:h2 class="example-name">
+            Custom Templates
+        </n:h2>
+        <n:p sclass="example-description">
+            Custom templates give you full control over how suggestions get rendered making it easy to customize the
+            look and feel of your typeahead.
+        </n:p>
+        <typeahead sclass="typeahead" placeholder="Oscar winners for Best Picture"
+                   dataset="@load(vm.bestPicturesPretty)"/>
+    </n:div>
+
+    <n:div sclass="example">
+        <n:h2 class="example-name">
+            Default Suggestions
+        </n:h2>
+        <n:p sclass="example-description">
+            NOT YET SUPPORTED
+        </n:p>
+    </n:div>
+
+    <n:div sclass="example">
+        <n:h2 class="example-name">
+            Multiple Datasets
+        </n:h2>
+        <n:p sclass="example-description">
+            NOT YET SUPPORTED
+        </n:p>
+    </n:div>
+
+    <n:div sclass="example">
+        <n:h2 class="example-name">
+            RTL Support
+        </n:h2>
+        <n:p sclass="example-description">
+            NOT YET SUPPORTED
+        </n:p>
+    </n:div>
+</window>
