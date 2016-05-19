@@ -4,14 +4,14 @@ import java.io.IOException;
 
 import org.zkoss.typeahead.data.Dataset;
 import org.zkoss.zk.ui.sys.ContentRenderer;
-import org.zkoss.zul.impl.XulElement;
+import org.zkoss.zul.Textbox;
 
 /**
  * A <a href="https://github.com/corejavascript/typeahead.js">Typeahead.js</a> component.
  *
  * @author Sean Connolly
  */
-public class Typeahead extends XulElement {
+public class Typeahead extends Textbox {
 
 	private Boolean highlight = true;
 	private Boolean hint = true;
@@ -19,10 +19,6 @@ public class Typeahead extends XulElement {
 	private String placeholder;
 	private String dir;
 	private Dataset dataset;
-
-	public Typeahead() {
-
-	}
 
 	public Boolean getHighlight() {
 		return highlight;

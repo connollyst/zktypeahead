@@ -1,4 +1,4 @@
-zul.typeahead.Typeahead = zk.$extends(zk.Widget, {
+zul.typeahead.Typeahead = zk.$extends(zul.inp.Textbox, {
 
     // fields
 
