@@ -21,7 +21,51 @@ zul.typeahead.Typeahead = zk.$extends(zul.inp.Textbox, {
             minLength: this.getMinLength()
         };
         var dataset = this._getNativeDataset();
-        $('#' + this.uuid).typeahead(config, dataset);
+        var widget = this;
+        var component = $('#' + this.uuid);
+        component.typeahead(config, dataset);
+        component.bind('typeahead:active', function () {
+            widget.fire('onTypeaheadActive');
+        });
+        component.bind('typeahead:idle', function () {
+            widget.fire('onTypeaheadIdle');
+        });
+        component.bind('typeahead:open', function () {
+            widget.fire('onTypeaheadOpen');
+        });
+        component.bind('typeahead:close', function () {
+            widget.fire('onTypeaheadClose');
+        });
+        component.bind('typeahead:change', function (target, type, bubbles, cancelable) {
+            console.log(target);
+            console.log(type);
+            console.log(bubbles);
+            console.log(cancelable);
+            widget.fire('onTypeaheadChange');
+        });
+        component.bind('typeahead:render', function (ev, suggestions, async, datasetName) {
+            widget.fire('onTypeaheadRender', suggestions);
+        });
+        component.bind('typeahead:select', function (ev, suggestion) {
+            widget.updateChange_();
+            widget.fire('onSelect', suggestion);
+        });
+        component.bind('typeahead:autocomplete', function (ev, suggestion) {
+            widget.fire('onTypeaheadAutocomplete', suggestion);
+        });
+
+        component.bind('typeahead:cursorchange', function (ev, suggestion) {
+            widget.fire('onTypeaheadCursorChange', suggestion);
+        });
+        component.bind('typeahead:asyncrequest', function (ev, query, datasetName) {
+            widget.fire('onTypeaheadAsyncRequest', query);
+        });
+        component.bind('typeahead:asynccancel', function (ev, query, datasetName) {
+            widget.fire('onTypeaheadAsyncCancel', query);
+        });
+        component.bind('typeahead:asyncreceive', function (ev, query, datasetName) {
+            widget.fire('onTypeaheadAsyncReceive', query);
+        });
     },
     domClass_: function (no) {
         var classes = this.$supers("domClass_", no) || '';

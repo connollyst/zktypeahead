@@ -17,7 +17,8 @@
             lookups, and backfilling with remote data.
         </n:p>
         <n:div class="demo">
-            <typeahead sclass="typeahead" placeholder="State of USA" dataset="@load(vm.states)"/>
+            <typeahead id="states" sclass="typeahead" dataset="@load(vm.states)"
+                       placeholder="State of USA" focus="true"/>
         </n:div>
     </n:div>
 
@@ -29,7 +30,8 @@
             Prefetched data is fetched and processed on initialization. If the browser supports local storage, the
             processed data will be cached there to prevent additional network requests on subsequent page loads.
         </n:p>
-        <typeahead sclass="typeahead" placeholder="Countries" dataset="@load(vm.countries)"/>
+        <typeahead id="countries" sclass="typeahead" dataset="@load(vm.countries)"
+                   placeholder="Countries"/>
     </n:div>
 
     <n:div sclass="example">
@@ -40,7 +42,8 @@
             Remote data is only used when the data provided by local and prefetch is insufficient. In order to prevent
             an obscene number of requests being made to the remote endpoint, requests are rate-limited.
         </n:p>
-        <typeahead sclass="typeahead" placeholder="Oscar winners for Best Picture" dataset="@load(vm.bestPictures)"/>
+        <typeahead id="bestPictures" sclass="typeahead" dataset="@load(vm.bestPictures)"
+                   placeholder="Oscar winners for Best Picture"/>
     </n:div>
 
     <n:div sclass="example">
@@ -51,8 +54,8 @@
             Custom templates give you full control over how suggestions get rendered making it easy to customize the
             look and feel of your typeahead.
         </n:p>
-        <typeahead sclass="typeahead" placeholder="Oscar winners for Best Picture"
-                   dataset="@load(vm.bestPicturesPretty)"/>
+        <typeahead id="bestPicturesPretty" sclass="typeahead" dataset="@load(vm.bestPicturesPretty)"
+                   placeholder="Oscar winners for Best Picture"/>
     </n:div>
 
     <n:div sclass="example">

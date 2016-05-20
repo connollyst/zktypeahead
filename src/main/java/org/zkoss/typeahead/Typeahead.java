@@ -3,6 +3,8 @@ package org.zkoss.typeahead;
 import java.io.IOException;
 
 import org.zkoss.typeahead.data.Dataset;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.sys.ComponentCtrl;
 import org.zkoss.zk.ui.sys.ContentRenderer;
 import org.zkoss.zul.Textbox;
 
@@ -12,6 +14,22 @@ import org.zkoss.zul.Textbox;
  * @author Sean Connolly
  */
 public class Typeahead extends Textbox {
+
+	static {
+		addClientEvent(Typeahead.class, Events.ON_SELECT, ComponentCtrl.CE_DUPLICATE_IGNORE);
+		addClientEvent(Typeahead.class, TypeaheadEvents.ACTIVE, ComponentCtrl.CE_IMPORTANT);
+		addClientEvent(Typeahead.class, TypeaheadEvents.IDLE, ComponentCtrl.CE_IMPORTANT);
+		addClientEvent(Typeahead.class, TypeaheadEvents.OPEN, ComponentCtrl.CE_IMPORTANT);
+		addClientEvent(Typeahead.class, TypeaheadEvents.CLOSE, ComponentCtrl.CE_IMPORTANT);
+		addClientEvent(Typeahead.class, TypeaheadEvents.CHANGE, ComponentCtrl.CE_IMPORTANT);
+		addClientEvent(Typeahead.class, TypeaheadEvents.RENDER, ComponentCtrl.CE_IMPORTANT);
+		addClientEvent(Typeahead.class, TypeaheadEvents.SELECT, ComponentCtrl.CE_IMPORTANT);
+		addClientEvent(Typeahead.class, TypeaheadEvents.AUTOCOMPLETE, ComponentCtrl.CE_IMPORTANT);
+		addClientEvent(Typeahead.class, TypeaheadEvents.CURSOR_CHANGE, ComponentCtrl.CE_IMPORTANT);
+		addClientEvent(Typeahead.class, TypeaheadEvents.ASYNC_REQUEST, ComponentCtrl.CE_IMPORTANT);
+		addClientEvent(Typeahead.class, TypeaheadEvents.ASYNC_CANCEL, ComponentCtrl.CE_IMPORTANT);
+		addClientEvent(Typeahead.class, TypeaheadEvents.ASYNC_RECEIVE, ComponentCtrl.CE_IMPORTANT);
+	}
 
 	private Boolean highlight = true;
 	private Boolean hint = true;
