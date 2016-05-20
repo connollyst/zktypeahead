@@ -9,12 +9,12 @@ typeahead.js is a fast and fully-featured autocomplete library [https://typeahea
     <dependency>
     	<groupId>org.zkoss</groupId>
     	<artifactId>zktypeahead</artifactId>
-    	<version>0.3</version>
+    	<version>0.11.1.2</version>
     </dependency>
 
 #### Gradle
 
-    runtime group: 'org.zkoss', name: 'zktypeahead', version: '0.3'
+    runtime group: 'org.zkoss', name: 'zktypeahead', version: '0.11.1.2'
 
 ## Demo
 
