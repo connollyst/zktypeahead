@@ -127,8 +127,7 @@ public class DemoViewModel {
 				"Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia",
 				"Washington", "West Virginia", "Wisconsin", "Wyoming" };
 		return Bloodhound
-				.builder()
-					.withLocal(states)
+				.local(states)
 					.withDatumTokenizers(Bloodhound.Tokenizer.whitespace())
 					.withQueryTokenizers(Bloodhound.Tokenizer.whitespace())
 					.build();
@@ -136,8 +135,7 @@ public class DemoViewModel {
 
 	public Dataset getCountries() {
 		return Bloodhound
-				.builder()
-					.withPrefetch("data/countries.json")
+				.prefetch("data/countries.json")
 					.withDatumTokenizers(Bloodhound.Tokenizer.whitespace())
 					.withQueryTokenizers(Bloodhound.Tokenizer.whitespace())
 					.build();
@@ -145,10 +143,10 @@ public class DemoViewModel {
 
 	public Dataset getBestPictures() {
 		Dataset bestPictures = Bloodhound
-				.builder()
-					.withPrefetch("data/post_1960.json", false)
-					// TODO implement web service
-					// .withRemote("data/films/queries/%QUERY.json", "%QUERY")
+				.prefetch("data/post_1960.json")
+					// TODO implement as 'remote' webservice
+					// .remote("data/films/queries/%QUERY.json", "%QUERY")
+					.withCache(false)
 					.withDatumTokenizers(Bloodhound.Tokenizer.whitespace("value"))
 					.withQueryTokenizers(Bloodhound.Tokenizer.whitespace())
 					.build();
@@ -181,8 +179,8 @@ public class DemoViewModel {
 
 	private Dataset getTeams(String name, String file) {
 		return Bloodhound
-				.builder()
-					.withPrefetch(file, false)
+				.prefetch(file)
+					.withCache(false)
 					.withDatumTokenizers(Bloodhound.Tokenizer.whitespace("team"))
 					.withQueryTokenizers(Bloodhound.Tokenizer.whitespace())
 					.build(name);
@@ -190,8 +188,7 @@ public class DemoViewModel {
 
 	public Dataset getRtl() {
 		return Bloodhound
-				.builder()
-					.withPrefetch("data/arabic.json")
+				.prefetch("data/arabic.json")
 					.withDatumTokenizers(Bloodhound.Tokenizer.whitespace())
 					.withQueryTokenizers(Bloodhound.Tokenizer.whitespace())
 					.build();

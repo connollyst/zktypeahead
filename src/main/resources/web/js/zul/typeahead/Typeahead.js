@@ -20,10 +20,10 @@ zul.typeahead.Typeahead = zk.$extends(zul.inp.Textbox, {
             highlight: this.getHighlight(),
             minLength: this.getMinLength()
         };
-        var dataset = this._getNativeDataset();
+        var ds = this._getNativeDataset();
         var widget = this;
         var component = $('#' + this.uuid);
-        component.typeahead(config, dataset);
+        component.typeahead(config, ds);
         component.bind('typeahead:active', function () {
             widget.fire('onTypeaheadActive');
         });
@@ -37,10 +37,6 @@ zul.typeahead.Typeahead = zk.$extends(zul.inp.Textbox, {
             widget.fire('onTypeaheadClose');
         });
         component.bind('typeahead:change', function (target, type, bubbles, cancelable) {
-            console.log(target);
-            console.log(type);
-            console.log(bubbles);
-            console.log(cancelable);
             widget.fire('onTypeaheadChange');
         });
         component.bind('typeahead:render', function (ev, suggestions, async, datasetName) {
@@ -79,10 +75,10 @@ zul.typeahead.Typeahead = zk.$extends(zul.inp.Textbox, {
     // private
 
     _getNativeDataset: function () {
-        var dataset = this.getDataset();
-        dataset['templates'] = this._toNativeDatasetTemplates(dataset['templates']);
-        dataset['source'] = this._toNativeDatasetSource(dataset['source']);
-        return dataset;
+        var ds = this.getDataset();
+        ds['templates'] = this._toNativeDatasetTemplates(ds['templates']);
+        ds['source'] = this._toNativeDatasetSource(ds['source']);
+        return ds;
     },
     _toNativeDatasetTemplates: function (templates) {
         for (var key in templates) {
@@ -96,10 +92,32 @@ zul.typeahead.Typeahead = zk.$extends(zul.inp.Textbox, {
         if ('_class' in source) {
             switch (source['_class']) {
                 case 'bloodhound':
+                    if (source.hasOwnProperty('prefetch')) {
+                        source.prefetch = this._toNativeFunctions(source.prefetch);
+                    }
+                    if (source.hasOwnProperty('remote')) {
+                        source.remote = this._toNativeFunctions(source.remote);
+                    }
                     return this._toBloodhoundDataset(source);
                 default:
                     throw 'Unsupported dataset source: "' + source['_class'] + '"'
             }
+        }
+    },
+    _toNativeFunctions: function (sourceData) {
+        if (sourceData.hasOwnProperty('prepare')) {
+            sourceData.prepare = this._toFunction(sourceData.prepare);
+        }
+        if (sourceData.hasOwnProperty('transform')) {
+            sourceData.transform = this._toFunction(sourceData.transform);
+        }
+        return sourceData;
+    },
+    _toFunction: function (fun) {
+        if (typeof fun == 'string') {
+            return eval('(' + fun + ')');
+        } else {
+            return fun;
         }
     },
     _toBloodhoundDataset: function (source) {
