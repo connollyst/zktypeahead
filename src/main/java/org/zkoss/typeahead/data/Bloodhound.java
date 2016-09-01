@@ -67,6 +67,10 @@ public class Bloodhound extends Dataset.Source {
 		getRemote().put(WILDCARD, wildcard);
 	}
 
+	public void setRemoteWildcard(String wildcard) {
+		getRemote().put(WILDCARD, wildcard);
+	}
+
 	public void setRemoteCache(boolean cache) {
 		getRemote().put(CACHE, cache);
 	}
@@ -210,6 +214,15 @@ public class Bloodhound extends Dataset.Source {
 
 		public Builder withRemote(String url, String wildcard) {
 			bloodhound.setRemote(url, wildcard);
+			return this;
+		}
+
+		public Builder withWildcard(String wildcard) {
+			if(type == Type.REMOTE) {
+				bloodhound.setRemoteWildcard(wildcard);
+			} else {
+				throw new IllegalArgumentException("'wildcard' is only applicable to remote data.");
+			}
 			return this;
 		}
 
