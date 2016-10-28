@@ -8,6 +8,6 @@ package org.zkoss.typeahead;
  */
 public class Version {
 
-	public static final String UID = "0.11.1.2";
+	public static final String UID = "0.11.1.3";
 
 }
