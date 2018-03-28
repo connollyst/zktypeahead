@@ -85,7 +85,6 @@ zul.typeahead.Typeahead = zk.$extends(zul.inp.Textbox, {
     _getNativeDatasets: function () {
         var that = this;
         return $.map(this.getDatasets(), function (ds) {
-            console.log(ds);
             ds['templates'] = that._toNativeDatasetTemplates(ds['templates']);
             ds['source'] = that._toNativeDatasetSource(ds['source']);
             return ds;
