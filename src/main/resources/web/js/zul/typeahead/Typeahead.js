@@ -8,7 +8,7 @@ zul.typeahead.Typeahead = zk.$extends(zul.inp.Textbox, {
         minLength: null,
         placeholder: null,
         dir: null,
-        dataset: null
+        datasets: null
     },
 
     setValue: function (value) {
@@ -25,7 +25,7 @@ zul.typeahead.Typeahead = zk.$extends(zul.inp.Textbox, {
             highlight: this.getHighlight(),
             minLength: this.getMinLength()
         };
-        var ds = this._getNativeDataset();
+        var ds = this._getNativeDatasets();
         var widget = this;
         var component = this._getComponent();
         component.typeahead(config, ds);
@@ -82,12 +82,14 @@ zul.typeahead.Typeahead = zk.$extends(zul.inp.Textbox, {
     _getComponent: function () {
         return $('#' + this.uuid);
     },
-
-    _getNativeDataset: function () {
-        var ds = this.getDataset();
-        ds['templates'] = this._toNativeDatasetTemplates(ds['templates']);
-        ds['source'] = this._toNativeDatasetSource(ds['source']);
-        return ds;
+    _getNativeDatasets: function () {
+        var that = this;
+        return $.map(this.getDatasets(), function (ds) {
+            console.log(ds);
+            ds['templates'] = that._toNativeDatasetTemplates(ds['templates']);
+            ds['source'] = that._toNativeDatasetSource(ds['source']);
+            return ds;
+        });
     },
     _toNativeDatasetTemplates: function (templates) {
         for (var key in templates) {

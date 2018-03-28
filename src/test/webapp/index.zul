@@ -71,9 +71,8 @@
         <n:h2 class="example-name">
             Multiple Datasets
         </n:h2>
-        <n:p sclass="example-description">
-            NOT YET SUPPORTED
-        </n:p>
+        <typeahead id="multiple-datasets" sclass="typeahead" dataset="@load(vm.multipleTeamDatasets)"
+                   placeholder="NBA and NHL teams"/>
     </n:div>
 
     <n:div sclass="example">
@@ -84,4 +83,5 @@
             NOT YET SUPPORTED
         </n:p>
     </n:div>
+    <separator height="200px"/>
 </window>
