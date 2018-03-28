@@ -11,6 +11,11 @@ zul.typeahead.Typeahead = zk.$extends(zul.inp.Textbox, {
         dataset: null
     },
 
+    setValue: function (value) {
+        this._getComponent().typeahead('val', value);
+        this.$supers("setValue", arguments);
+    },
+
     // protected
 
     bind_: function () {
@@ -22,7 +27,7 @@ zul.typeahead.Typeahead = zk.$extends(zul.inp.Textbox, {
         };
         var ds = this._getNativeDataset();
         var widget = this;
-        var component = $('#' + this.uuid);
+        var component = this._getComponent();
         component.typeahead(config, ds);
         component.bind('typeahead:active', function () {
             widget.fire('onTypeaheadActive');
@@ -73,6 +78,10 @@ zul.typeahead.Typeahead = zk.$extends(zul.inp.Textbox, {
     },
 
     // private
+
+    _getComponent: function () {
+        return $('#' + this.uuid);
+    },
 
     _getNativeDataset: function () {
         var ds = this.getDataset();
